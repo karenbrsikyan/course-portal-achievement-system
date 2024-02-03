@@ -1,66 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Course Portal Achievement System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About Project
 
-## About Laravel
+Welcome to the Course Portal Achievement System. This system is designed to provide users with achievements and badges based on their activities within the Course Portal. Achievements are unlocked when users complete certain milestones, such as watching lessons or writing comments, while badges are earned based on the number of achievements unlocked.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Table of Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. [Getting Started](#getting-started)
+2. [Listening for Events](#listening-for-events)
+3. [Achievements and Badges](#achievements-and-badges)
+4. [Console Commands](#console-commands)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Getting Started
 
-## Learning Laravel
+To implement the Course Portal Achievement System, you need to integrate it into your Laravel project. Follow these steps to get started:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone this repository to your local environment.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Run `composer install` to install the necessary dependencies.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Configure your database settings in the `.env` file.
 
-## Laravel Sponsors
+4. Run database migrations and seed the database with initial data:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+   ```
+   php artisan migrate --seed
+   ```
 
-### Premium Partners
+5. Make sure to set up the event listeners for `LessonWatched` and `CommentWritten` events as described in the [Listening for Events](#listening-for-events) section below. Default event listeners have already been provided. You can also add others to these listeners to unlock additional achievements and badges.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Listening for Events
 
-## Contributing
+In your Laravel application, you should have event listeners for the `LessonWatched` and `CommentWritten` events. When these events are fired, the Course Portal Achievement System will automatically listen for them and unlock relevant achievements and badges for users.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Here's an example of how to set up event listeners in Laravel:
 
-## Code of Conduct
+```php
+protected $listen = [
+    LessonWatched::class => [
+        // Add your listener for LessonWatched event here
+    ],
+    CommentWritten::class => [
+        // Add your listener for CommentWritten event here
+    ],
+];
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Ensure that these listeners call the appropriate methods to unlock achievements and badges.
 
-## Security Vulnerabilities
+## Achievements and Badges
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+The Course Portal Achievement System has several achievements and badges that users can unlock:
 
-## License
+### Lessons Watched Achievements
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- First Lesson Watched
+- 5 Lessons Watched
+- 10 Lessons Watched
+- 25 Lessons Watched
+- 50 Lessons Watched
+
+### Comments Written Achievements
+
+- First Comment Written
+- 3 Comments Written
+- 5 Comments Written
+- 10 Comments Written
+- 20 Comments Written
+
+### Badges
+
+- Beginner: 0 Achievements
+- Intermediate: 4 Achievements
+- Advanced: 8 Achievements
+- Master: 10 Achievements
+
+Achievements and badges are unlocked automatically when users meet the criteria. When an achievement is unlocked, an `AchievementUnlocked` event is fired with the relevant information. Similarly, when a user earns a new badge, a `BadgeUnlocked` event is fired.
+
+## Console Commands
+
+To simulate user activities and test the Course Portal Achievement System, you can use Laravel console commands. These commands allow you to simulate watching lessons and writing comments for testing purposes.
+
+Here are some example commands you can run:
+
+- Simulate watching a lesson:
+  ```
+  php artisan app:watch-lesson {--lesson=1: Lesson ID to watch} {--user=1: User ID of the watcher}
+  ```
+  Replace the IDs with the user id of the user watching the lesson and lesson id for the lesson being watched respectively.
+
+- Simulate writing a comment:
+  ```
+  php artisan app:write-comment {--user=1} {--comment="This is a comment"}
+  ```
+
+You can use these commands to test the unlocking of achievements and badges based on user activities.
+
+That's it! You now have the Course Portal Achievement System integrated into your Laravel project. Users can earn achievements and badges as they engage with the Course Portal, and you can monitor their progress through the provided commands.
+
+## How to run the project
+- Run `php artisan serve` to start the server
+
+## Testing
+- Run `php artisan test` to run the tests
+- Run `php artisan test --coverage-html coverage-report` to generate a coverage report
