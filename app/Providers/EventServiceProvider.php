@@ -31,7 +31,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         AchievementUnlocked::class => [
             AchievementUnlockedListener::class,
-        ]
+        ],
     ];
 
     /**
